@@ -16,5 +16,6 @@ in
 [
   shakePkgs
   pkgs.gcc
+  pkgs.haskellPackages.hlint
   ormolu.ormolu
 ]
