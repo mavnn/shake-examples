@@ -35,3 +35,4 @@ rules = do
       out
   "//*.hs" %> \out -> do
     cmd_ "ormolu" "-m" "inplace" out
+    cmd_ "hlint" out
