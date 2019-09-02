@@ -23,9 +23,11 @@ main =
 
 rules :: Rules ()
 rules = do
+  -- Clean build artifacts (including shake history)
   phony "clean" $ do
     putNormal "Cleaning _build"
     removeFilesAfter "_build" ["//*"]
+  -- Build our Haskell application
   "_build" </> "main" <.> exe %> \out -> do
     src <- getDirectoryFiles "" ["src//*.hs"]
     need src
@@ -37,6 +39,7 @@ rules = do
       "_build"
       "-o"
       out
+  -- Format and lint our source files
   batch 10 ("//*.hs" %>)
     ( \out -> do
       cmd_ "ormolu" "-m" "inplace" out
