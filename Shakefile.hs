@@ -7,7 +7,7 @@ import Development.Shake
 import Development.Shake.FilePath
 
 main :: IO ()
-main = do
+main =
   shakeArgs
     shakeOptions
       { shakeFiles = "_build"
@@ -15,7 +15,10 @@ main = do
       , shakeColor = True
       , shakeThreads = 4 -- default to multicore!
       } $ do
-    want ["_build" </> "main" <.> exe]
+    want
+      [ "_build" </> "main" <.> exe
+      , "Shakefile.hs"
+      ]
     rules
 
 rules :: Rules ()
@@ -29,10 +32,14 @@ rules = do
     cmd_
       "ghc"
       ("src" </> "main.hs")
+      "-isrc"
       "-outputdir"
       "_build"
       "-o"
       out
-  "//*.hs" %> \out -> do
-    cmd_ "ormolu" "-m" "inplace" out
-    cmd_ "hlint" out
+  batch 10 ("//*.hs" %>)
+    ( \out -> do
+      cmd_ "ormolu" "-m" "inplace" out
+      pure out
+    )
+    (cmd_ "hlint")
