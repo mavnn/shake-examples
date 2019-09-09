@@ -3,7 +3,16 @@ let
 
   stdenv = pkgs.stdenv;
 
-  shakePkgs = pkgs.haskellPackages.ghcWithPackages (ps: with ps; [ghc shake]);
+  shakePkgs = pkgs.haskellPackages.ghcWithPackages
+    (ps: with ps;
+      [
+        apply-refact
+        ghc
+        shake
+        uuid
+        yaml
+      ]
+    );
 
   ormoluSrc = pkgs.fetchFromGitHub {
     owner  = "tweag";

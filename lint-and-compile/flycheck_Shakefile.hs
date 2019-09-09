@@ -44,7 +44,7 @@ rules = do
   batch 10 ("//*.hs" %>)
     ( \out -> do
       historyDisable
-      cmd_ "ormolu" "-m" "inplace" out
+      cmd_ "ormolu" "-m" "inplace"
       pure out
     )
     (cmd_ "hlint")
